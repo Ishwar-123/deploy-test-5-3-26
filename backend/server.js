@@ -51,12 +51,28 @@ initSocket(httpServer);
 // Trust proxy for correct IP detection
 app.set('trust proxy', 1);
 
-// CORS configuration - Must be first to handle preflight requests
+// CORS configuration - Allow multiple origins
+const allowedOrigins = [
+    process.env.FRONTEND_URL,
+    'https://ebookcph.vercel.app', // Explicitly allow current Vercel URL
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    'http://localhost:3000'
+].filter(Boolean);
+
 app.use(cors({
-    origin: [process.env.FRONTEND_URL, 'http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:3000'],
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 }));
 
 // Connect to database
@@ -138,14 +154,20 @@ if (process.env.NODE_ENV === 'development') {
 // Serve ONLY cover images and profile pictures publicly (NOT PDFs)
 // PDFs are served through secure download routes with authentication
 app.use('/uploads/covers', (req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+        res.header("Access-Control-Allow-Origin", origin);
+    }
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Cross-Origin-Resource-Policy", "cross-origin");
     next();
 }, express.static(path.join(__dirname, 'uploads', 'covers')));
 
 app.use('/uploads/profiles', (req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+        res.header("Access-Control-Allow-Origin", origin);
+    }
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Cross-Origin-Resource-Policy", "cross-origin");
     next();
@@ -153,6 +175,14 @@ app.use('/uploads/profiles', (req, res, next) => {
 
 // NOTE: PDFs are NOT publicly accessible. They are served through 
 // secure download/stream routes in /api/downloads.
+
+// Base API route
+app.get('/api', (req, res) => {
+    res.json({
+        success: true,
+        message: 'eBook Publication System API is online'
+    });
+});
 
 // API Routes
 app.use('/api/auth', authRoutes);
