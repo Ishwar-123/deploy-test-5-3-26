@@ -28,8 +28,7 @@ const Book = sequelize.define('Book', {
     },
     description: {
         type: DataTypes.TEXT('long'),
-        allowNull: true,
-        defaultValue: ''
+        allowNull: true
     },
     isbn: {
         type: DataTypes.STRING,
@@ -67,8 +66,7 @@ const Book = sequelize.define('Book', {
     },
     additionalImages: {
         type: DataTypes.JSON,
-        allowNull: true,
-        defaultValue: []
+        allowNull: true
     },
     fileUrl: {
         type: DataTypes.STRING,
@@ -113,9 +111,7 @@ const Book = sequelize.define('Book', {
     // Stats (using JSON for nested object)
     stats: {
         type: DataTypes.JSON,
-        defaultValue: {
-            views: 0
-        }
+        allowNull: true
     },
     catalogUrl: {
         type: DataTypes.STRING,
@@ -156,22 +152,17 @@ const Book = sequelize.define('Book', {
     // DRM Settings (JSON field)
     drm: {
         type: DataTypes.JSON,
-        defaultValue: {
-            allowDownload: true,
-            downloadLimit: 3,
-            allowPrint: false,
-            watermark: true
-        }
+        allowNull: true
     },
     // Tags (JSON array)
     tags: {
         type: DataTypes.JSON,
-        defaultValue: []
+        allowNull: true
     },
     // Preview pages (JSON array)
     previewPages: {
         type: DataTypes.JSON,
-        defaultValue: []
+        allowNull: true
     },
     // Admin-selected preview page range
     previewStartPage: {
