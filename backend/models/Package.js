@@ -57,7 +57,7 @@ const Package = sequelize.define('Package', {
     },
     features: {
         type: DataTypes.JSON,
-        defaultValue: []
+        allowNull: true
     },
     maxBooks: {
         type: DataTypes.INTEGER,
