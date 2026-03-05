@@ -101,12 +101,7 @@ const User = sequelize.define('User', {
     // Reader Preferences (JSON field)
     readerPreferences: {
         type: DataTypes.JSON,
-        allowNull: true,
-        defaultValue: {
-            fontSize: 'medium',
-            theme: 'light',
-            language: 'en'
-        }
+        allowNull: true
     },
     institutionId: {
         type: DataTypes.INTEGER,
