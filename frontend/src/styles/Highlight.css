@@ -1,0 +1,51 @@
+.Highlight {
+    position: absolute;
+}
+
+.Highlight__parts {
+    opacity: 1;
+}
+
+.Highlight__part {
+    background: rgba(255, 235, 59, 0.4);
+    position: absolute;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.Highlight__part:hover {
+    background: rgba(255, 235, 59, 0.6);
+}
+
+.Highlight__emoji {
+    position: absolute;
+    z-index: 10;
+    pointer-events: none;
+    font-size: 20px;
+}
+
+/* Disable text selection completely in the PDF reader */
+.textLayer {
+    opacity: 1 !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+}
+
+.textLayer span {
+    color: transparent !important;
+    background: none !important;
+    pointer-events: none !important;
+    /* This prevents the cursor from even seeing the text */
+}
+
+/* Ensure highlights don't have text inside them */
+.Highlight__part * {
+    display: none !important;
+}
+
+/* Restore PDF visibility: Remove aggressive width overrides that break react-pdf internal scaling */
+.pdfViewer {
+    margin: 0 auto;
+}

@@ -1,0 +1,48 @@
+
+@keyframes slideInDown {
+  from {
+    transform: translate3d(0, -100%, 0);
+    visibility: visible;
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.Tip {
+  background: white;
+  font-size: 14px;
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+}
+
+.Tip__compact {
+  cursor: pointer;
+  padding: 10px;
+}
+
+.Tip__card {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.Tip__card > div:first-child {
+  display: flex;
+}
+
+.Tip__card textarea {
+  width: 100%;
+}
+.Tip__card input[type="submit"] {
+  cursor: pointer;
+  margin-top: 10px;
+  background: #333;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+}
