@@ -36,8 +36,7 @@ const Order = sequelize.define('Order', {
     // Items stored as JSON array
     items: {
         type: DataTypes.JSON,
-        allowNull: false,
-        defaultValue: []
+        allowNull: false
     },
     subtotal: {
         type: DataTypes.DECIMAL(10, 2),
